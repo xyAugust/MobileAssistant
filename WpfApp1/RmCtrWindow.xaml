@@ -1,0 +1,44 @@
+﻿<Controls:MetroWindow  
+        x:Class="WpfApp1.RmCtrWindow"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="RmCtrWindown" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Viewbox Width="30" Height="30" Margin="10 0 10 0">
+                    <Canvas Width="24" Height="24" Background="Black">
+                        <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"
+                                  Fill="White" />
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Width="30" Height="30" Margin="10 0 10 0">
+                    <Canvas Width="24" Height="24" Background="Black">
+                        <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"
+                                  Fill="White" />
+                    </Canvas>
+                </Viewbox>
+                <Viewbox Width="30" Height="30" Margin="10 0 10 0">
+                    <Canvas Width="24" Height="24" Background="Black">
+                        <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"
+                                  Fill="White" />
+                    </Canvas>
+                </Viewbox>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            
+            <Image  Source="{Binding SelectItemData.Icon}" x:Name="img"/>
+        </Grid>
+    </Grid>
+</Controls:MetroWindow >
