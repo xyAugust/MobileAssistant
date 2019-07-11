@@ -1,14 +1,16 @@
 ﻿<Controls:MetroWindow  
         x:Class="WpfApp1.RmCtrWindow"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro" 
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
-        mc:Ignorable="d"
-        Title="RmCtrWindown" Height="450" Width="800">
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:WinFormControls="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+    xmlns:WinFormHost="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+    xmlns:wf="clr-namespace:WpfApp1"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d"
+    Title="RmCtrWindown" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -37,8 +39,17 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            
-            <Image  Source="{Binding SelectItemData.Icon}" x:Name="img"/>
+            <Border x:Name="border"></Border>
+            <StackPanel Orientation="Vertical">
+            <Button Click="OpenClick" Width="600" Height="10" x:Name="ShowFormBtn"/>
+            <WindowsFormsHost Width="600" 
+                              Height="300"
+                              Background="#e9e9e9"
+                              Name="windowsFormsHost1" SizeChanged="WindowsFormsHost1_SizeChanged">
+                <wf:UserControl1 x:Name="myUCParent"></wf:UserControl1>
+            </WindowsFormsHost>
+            <Image Visibility="Collapsed" Source="{Binding SelectItemData.Icon}" x:Name="img"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </Controls:MetroWindow >

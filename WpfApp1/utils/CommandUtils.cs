@@ -30,7 +30,7 @@ namespace WpfApp1.utils
             p.StartInfo.RedirectStandardInput = true;   //重定向标准输入
             p.StartInfo.RedirectStandardOutput = true;  //重定向标准输出
             p.StartInfo.RedirectStandardError = true;   //重定向错误输出
-            p.StartInfo.CreateNoWindow = false;         //设置不显示窗口
+            p.StartInfo.CreateNoWindow = true;         //设置不显示窗口
             p.Start();   //启动
             p.StartInfo.Arguments = "/c ";              //设定程式执行参数 
 

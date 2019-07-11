@@ -1,19 +1,19 @@
 ﻿WpfApp1
 
 
-exe
+winexe
 C#
 .cs
-F:\studio\vsWs\WpfApp1\WpfApp1\obj\Debug\
+E:\Studio\vsWs\MobileAssistant\WpfApp1\obj\Debug\
 WpfApp1
 none
 false
 DEBUG;TRACE
-F:\studio\vsWs\WpfApp1\WpfApp1\App.xaml
+E:\Studio\vsWs\MobileAssistant\WpfApp1\App.xaml
 6-1040566892
 
-28384303927
-19207645974
+32128299039
+24-1460157439
 MainWindow.xaml;MainWindow2.xaml;MyStyleMaDe.xaml;Page1.xaml;MyStyleMetro.xaml;RmCtrWindow.xaml;
 
 False
