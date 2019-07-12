@@ -17,6 +17,8 @@ namespace WpfApp1.ViewModel
 {
     class MainWindowViewModel : NotificationBase
     {
+
+        Window CtrWindow;
         CommandUtils CmdUtils;
         public Action<object> AAction;
         public DelegateCommand SelectItemChangedCommand { get; set; }
@@ -65,14 +67,21 @@ namespace WpfApp1.ViewModel
             ThreadPool.QueueUserWorkItem(new WaitCallback(RequestList));
         }
 
+        private void RemoteCtrWindow(object obj)
+        {
+            if (CtrWindow == null || CtrWindow.IsVisible == false)
+            {
+                CtrWindow = new RmCtrWindow();
+                CtrWindow.Show();
+            }
+            else
+            {
+                CtrWindow.Activate();
+                CtrWindow.WindowState = WindowState.Normal;
+            }
+        }
 
-    private void RemoteCtrWindow(object obj)
-    {
-            Window CtrWindow = new RmCtrWindow();
-            CtrWindow.Show();
-    }
-
-    private void ForwardTcpProt(object obj)
+        private void ForwardTcpProt(object obj)
         {
             string cmd = "adb forward tcp:12306 tcp:12307";
             ThreadPool.QueueUserWorkItem(new WaitCallback(AdbExe), cmd);
