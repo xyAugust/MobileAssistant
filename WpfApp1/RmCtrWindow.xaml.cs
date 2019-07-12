@@ -1,10 +1,10 @@
 ﻿using MahApps.Metro.Controls;
 using System;
+using System.Diagnostics;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
-using WpfApp1.scrcpy;
 using WpfApp1.ViewModel;
 
 namespace WpfApp1
@@ -14,138 +14,87 @@ namespace WpfApp1
     /// </summary>
     public partial class RmCtrWindow : MetroWindow
     {
-        bool open;
         public RmCtrWindow()
         {
             this.DataContext = ViewModelBss.Instance.MainVM2;
             InitializeComponent();
-            
 
-            System.Threading.Thread.Sleep(1000); 
+            System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+
+            }));
         }
          
-
-        public void ShowImage()
-        {
-            if (tmp == null)
-            {
-                return;
-            }
-            BitmapImage bi = new BitmapImage();
-            // BitmapImage.UriSource must be in a BeginInit/EndInit block.  
-            bi.BeginInit();
-            bi.UriSource = new Uri(@tmp, UriKind.RelativeOrAbsolute);
-            bi.EndInit();
-            img.Source = bi;
-        }
-
-        string tmp;
-        private void Cap(object obj)
-        {
-            open = true;
-            for (int i = 0; ; i++)
-            {
-                if (!open)
-                {
-                    break;
-                }
-                string cmd = "adb shell screencap -p /sdcard/123/tmp.png";
-                tmp = Environment.CurrentDirectory + "//tmp.png" + i;
-                string cmd2 = "adb pull /sdcard/123/tmp.png " + tmp;
-                AdbExe(cmd);
-                AdbExe(cmd2);
-                System.Windows.Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    ShowImage();
-                }));
-            }
-             
-        }
-
-        private void AdbExe(object obj)
-        {
-            string cmd = (string)obj;
-            string output = CmdHelper.RunCmd(cmd);
-            Console.WriteLine(output);
-        }
-
+         
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            open = false;
-        }
-
-        Form f1;
-        IntPtr intptrChild = IntPtr.Zero;
-        private void OpenClick(object sender, RoutedEventArgs e)
-        {
-            //ShowForm1(sender, e); 
-            ShowForm3(sender, e); 
-        }
-
-        private void ShowForm3(object sender, RoutedEventArgs e)
-        {
-            IntPtr intptrParent = myUCParent.PanlParent.Handle;
-            intptrChild = EmbeddedApp.FindWindow(null, "rk3399-mid"); 
-            // 
-            Thread tt = new Thread(() =>
-            {
-                while (true)
-                {
-                    if (intptrChild != IntPtr.Zero)
-                    {
-                        this.Dispatcher.Invoke(new Action(() =>
-                        {
-                            EmbeddedApp.SetParent(intptrChild, intptrParent);
-                            EmbeddedApp.MoveWindow(intptrChild, 0, 0, myUCParent.PanlParent.Width, myUCParent.PanlParent.Height, true);
-                            EmbeddedApp.ShowWindow(intptrChild, 5);
-                        }));
-
-                        break;
-                    }
-
-                }
-            });
-
-            tt.IsBackground = true;
-            tt.Start();
         }
          
-        private void ShowForm1(object sender, RoutedEventArgs e)
+        IntPtr intptrChild = IntPtr.Zero;
+        bool IsStart = false;
+        private void OpenClick(object sender, RoutedEventArgs e)
         {
-            IntPtr intptrParent = myUCParent.PanlParent.Handle;
-            //
-            f1 = new FormMain();
-            f1.Show();
-            intptrChild = f1.Handle;
-            // 
-            Thread tt = new Thread(() =>
+            if (IsStart)
             {
-                while (true)
+                return;
+            }
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartSubWindow));
+            IntPtr intptrParent = MyFormParent.PanlParent.Handle;
+            ThreadPool.QueueUserWorkItem(new WaitCallback(UpdateSubWindow), intptrParent);  
+        }
+
+        private void StartSubWindow(object state)
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = @"D:\Programs\scrcpy-win64\scrcpy.exe";
+            p.StartInfo.CreateNoWindow = true;
+            p.StartInfo.WindowStyle = ProcessWindowStyle.Normal;
+            p.StartInfo.UseShellExecute = false;        //关闭Shell的使用
+            p.StartInfo.RedirectStandardOutput = true;  //重定向标准输出
+            p.Start();
+            StreamReader sr = p.StandardOutput;
+            string line = sr.ReadLine();
+            Console.WriteLine("scrcpy");
+            Console.WriteLine(line);
+
+        }
+
+        private void UpdateSubWindow(object obj)
+        {
+            IntPtr intptrParent = (IntPtr)obj;
+            while (true)
+            {
+                if (intptrChild != IntPtr.Zero)
                 {
-                    if (intptrChild != IntPtr.Zero)
+                    IsStart = true;
+                    this.Dispatcher.Invoke(new Action(() =>
                     {
-                        this.Dispatcher.Invoke(new Action(() =>
-                        {
-                            EmbeddedApp.SetParent(intptrChild, intptrParent);
-                            EmbeddedApp.MoveWindow(intptrChild, 0, 0, myUCParent.PanlParent.Width, myUCParent.PanlParent.Height, true);
-                            EmbeddedApp.ShowWindow(intptrChild, 5);
-                        }));
+                        long oldstyle = EmbeddedApp.GetWindowLong(intptrChild, EmbeddedApp.GWL_STYLE);
+                        long style = oldstyle & (~(EmbeddedApp.WS_CAPTION | EmbeddedApp.WS_CAPTION_2));
+                        EmbeddedApp.SetWindowLong(intptrChild, EmbeddedApp.GWL_STYLE, (UInt32)style);
+                        EmbeddedApp.SetParent(intptrChild, intptrParent);
+                        EmbeddedApp.MoveWindow(intptrChild, 0, 0, MyFormParent.PanlParent.Width, MyFormParent.PanlParent.Height, true);
+                        EmbeddedApp.ShowWindow(intptrChild, 5);
+                    }));
 
-                        break;
-                    }
-
+                    break;
                 }
-            });
+                else
+                {
+                    Thread.Sleep(100);
+                    //intptrChild = Process.GetProcessesByName("scrcpy")[0].MainWindowHandle;
+                    intptrChild = EmbeddedApp.FindWindow(null, "rk3399-mid");
+                    Console.WriteLine("GetProcessesByName");
+                }
 
-            tt.IsBackground = true;
-            tt.Start();
+            }
         }
 
         private void WindowsFormsHost1_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (f1 == null) return;
-            EmbeddedApp.MoveWindow(f1.Handle, 0, 0, myUCParent.PanlParent.Width, myUCParent.PanlParent.Height, true);
+            if (intptrChild == IntPtr.Zero) return;
+            EmbeddedApp.MoveWindow(intptrChild, 0, 0, MyFormParent.PanlParent.Width, MyFormParent.PanlParent.Height, true);
         }
     }
 }

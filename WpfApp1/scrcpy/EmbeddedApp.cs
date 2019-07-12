@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 public class EmbeddedApp
@@ -39,7 +40,8 @@ public class EmbeddedApp
 
     [DllImport("user32.dll", CharSet = CharSet.Auto)]
     public static extern bool MoveWindow(IntPtr hWnd, int x, int y, int cx, int cy, bool repaint);
-
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
+    public static extern IntPtr GetModuleHandle(string lpModuleName);
 
     public const int HWND_TOP = 0x0;
     public const int WM_COMMAND = 0x0112;
@@ -47,4 +49,8 @@ public class EmbeddedApp
     public const int WM_PAINT = 0x000F;
     public const int WM_SIZE = 0x0005;
     public const int SWP_FRAMECHANGED = 0x0020;
+    public const int GWL_STYLE = (-16);
+    public const int WS_CAPTION = 0xC00000;
+    public const int WS_CAPTION_2 = 0XC0000;
+     
 }

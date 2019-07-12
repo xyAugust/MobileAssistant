@@ -16,13 +16,15 @@
             <RowDefinition Height="30"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0"> 
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Viewbox Width="30" Height="30" Margin="10 0 10 0">
+                    <Button Click="OpenClick">
                     <Canvas Width="24" Height="24" Background="Black">
                         <Path Data="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"
                                   Fill="White" />
                     </Canvas>
+                    </Button>
                 </Viewbox>
                 <Viewbox Width="30" Height="30" Margin="10 0 10 0">
                     <Canvas Width="24" Height="24" Background="Black">
@@ -38,18 +40,18 @@
                 </Viewbox>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
-            <Border x:Name="border"></Border>
-            <StackPanel Orientation="Vertical">
-            <Button Click="OpenClick" Width="600" Height="10" x:Name="ShowFormBtn"/>
-            <WindowsFormsHost Width="600" 
-                              Height="300"
+        <Grid Grid.Row="1" SizeChanged="WindowsFormsHost1_SizeChanged" >
+            <Grid.RowDefinitions>  
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" > 
+                <WindowsFormsHost    
+                              Margin="1 1 1 1"
                               Background="#e9e9e9"
-                              Name="windowsFormsHost1" SizeChanged="WindowsFormsHost1_SizeChanged">
-                <wf:UserControl1 x:Name="myUCParent"></wf:UserControl1>
-            </WindowsFormsHost>
-            <Image Visibility="Collapsed" Source="{Binding SelectItemData.Icon}" x:Name="img"/>
-            </StackPanel>
+                              Name="windowsFormsHost1" >
+                    <wf:UserControl1 
+                    x:Name="MyFormParent"></wf:UserControl1>
+                </WindowsFormsHost>
+            </Grid>  
         </Grid>
     </Grid>
 </Controls:MetroWindow >

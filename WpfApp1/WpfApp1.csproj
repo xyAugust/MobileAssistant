@@ -61,9 +61,6 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SmileWei.EmbeddedApp">
-      <HintPath>..\..\..\githubWs\AppContainer\SmileWei.EmbeddedApp\bin\Debug\SmileWei.EmbeddedApp.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -90,24 +87,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="base\Constant.cs" />
-    <Compile Include="FormMain.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormMain.Designer.cs">
-      <DependentUpon>FormMain.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow2.xaml.cs">
       <DependentUpon>MainWindow2.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Page1.xaml.cs">
-      <DependentUpon>Page1.xaml</DependentUpon>
     </Compile>
     <Compile Include="RmCtrWindow.xaml.cs">
       <DependentUpon>RmCtrWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="scrcpy\EmbeddedApp.cs" />
-    <Compile Include="scrcpy\ShowForm.cs" />
-    <Compile Include="scrcpy\Win32Native.cs" />
     <Compile Include="tcp\ICallback.cs" />
     <Compile Include="tcp\RequestEntity.cs" />
     <Compile Include="UserControl1.cs">
@@ -146,10 +132,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MyStyleMaDe.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Page1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
